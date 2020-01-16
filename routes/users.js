@@ -39,21 +39,7 @@ router.post('/sign-up', async function(req, res, next) {
     let isUserExists;
     if (user){
     isUserExists = false
-    console.log("HERE IS THE MAIL", req.body.email)
     
-    const sgMail = require("@sendgrid/mail");
-    sgMail.setApiKey(process.env.SECRET_SENGRID_KEY);
-    const msg={
-      to: "c.rungette@gmail.com",
-      from:"no-reply@mathbrode.com",
-      subject: "Bienvenue sur Mathbrode !",
-      text:`Bonjour ${req.body.first_name}, et bienvenue sur Mathbrode
-      Tu as désormais un compte chez nous. Viens vite nous rendre visite sur Mathbrode.com`,
-      html:`<h2> Bonjour ${req.body.first_name} </h2> ! 
-      Et bienvenue sur Mathbrode. Tu as désormais un compte chez nous. Viens vite nous rendre visite sur Mathbrode.com`,
-    };
-
-sgMail.send(msg);
         
     res.json({user, isUserExists, userExists})
   }else if (error){
@@ -63,6 +49,21 @@ sgMail.send(msg);
     }
   });
 }
+
+const sgMail = require("@sendgrid/mail");
+    sgMail.setApiKey(process.env.SECRET_SENGRID_KEY);
+    const msg={
+      to: req.body.email,
+      from:"no-reply@mathbrode.com",
+      subject: "Bienvenue sur Mathbrode !",
+      text:`Bonjour ${req.body.first_name}, et bienvenue sur Mathbrode
+      Tu as désormais un compte chez nous. Viens vite nous rendre visite sur Mathbrode.com`,
+      html:`<h2> Bonjour ${req.body.first_name} </h2> ! 
+      Et bienvenue sur Mathbrode. Tu as désormais un compte chez nous. Viens vite nous rendre visite sur Mathbrode.com`,
+    };
+
+sgMail.send(msg);
+console.log("===============================")
 })
 
 router.post('/sign-in', async function(req, res, next){
@@ -102,7 +103,7 @@ router.post('/create-message', async function (req, res, next){
     } else{
       console.log("MESSAGE NOT SAVED:", error)
       res.json({error})
-    }
+    }req.body.email
   });
 
 })
@@ -150,7 +151,7 @@ router.post('/order', function (req, res, next){
       const sgMail = require("@sendgrid/mail");
       sgMail.setApiKey(process.env.SECRET_SENGRID_KEY);
       const msg={
-          to: "c.rungette@gmail.com",
+          to: req.body.email,
           from:"no-reply@mathbrode.com",
           subject: "Commande validée",
           text:`Bonjour ${req.body.name},
