@@ -114,6 +114,9 @@ router.post('/order', function (req, res, next){
       this.setDate(this.getDate() + parseInt(days));
       return this;
   };
+  var result
+  req.body.in_person === 'true' ? result = true : result = false
+  console.log("LE RESULTAT:", result)
    var currentDate = new Date();
   newOrder = new OrderModel({
     user_id: req.body.user_id,
@@ -121,6 +124,7 @@ router.post('/order', function (req, res, next){
     date: new Date,
     sent: false,
     shipping_date: currentDate.addDays(4),
+    in_person: result
   })
 
   newOrder.save(function(error, order){

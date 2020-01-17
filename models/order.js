@@ -6,6 +6,7 @@ let orderSchema = mongoose.Schema({
     date: Date,
     sent: Boolean,
     shipping_date: Date,
+    in_person: Boolean,
 });
 
 const OrderModel = mongoose.model("orders", orderSchema);
