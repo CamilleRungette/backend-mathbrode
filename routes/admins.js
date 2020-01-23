@@ -8,6 +8,7 @@ MessageModel= require('../models/message');
 OrderModel = require('../models/order')
 ItemOrderModel = require('../models/item_order')
 UserModel = require('../models/user')
+PersoOrderModel = require('../models/perso_order')
 
 
 router.post('/create-admin', function (req, res, next){
@@ -200,6 +201,7 @@ router.post('/create-workshop', function(req, res, next){
       }
     });
 })
+
 router.get('/orders', async function(req, res, next){
   allOrders = await OrderModel.find(function(err, orders){
     console.log(orders)
@@ -228,5 +230,32 @@ router.post('/update-order', async function(req, res, next){
     res.json({allOrders})
 })
 
+
+router.post('/create-perso-order', function(req, res, next){
+  console.log("Create perso order ===========>", req.body)
+  var current_date = new Date
+  Date.prototype.addDays = function(days) {
+    this.setDate(this.getDate() + parseInt(days));
+    return this;
+};
+  newPersoOrder =  new PersoOrderModel({
+    user_id: req.body.user_id,
+    total: req.body.total,
+    date: current_date,
+    shipping_date: current_date.addDays(4),
+    in_person: req.body.in_person,
+    photo: req.body.photo,
+    shipping_fee: req.body.shipping_fee
+  })
+
+  newPersoOrder.save(function(error, order){
+    if(error){
+      console.log("ERREUR:", error);
+    }else if (order){
+      console.log("order SAVED IN DATABASE", order)
+      res.json({order})
+    }
+  });
+})
 
 module.exports = router;
