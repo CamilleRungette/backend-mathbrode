@@ -8,7 +8,8 @@ let persoOrderSchema = mongoose.Schema({
     shipping_date: Date,
     in_person: Boolean,
     photo: String,
-    shipping_fee: Number
+    shipping_fee: Number,
+    description: String,
 });
 
 const OrderModel = mongoose.model("perso_orders", persoOrderSchema);

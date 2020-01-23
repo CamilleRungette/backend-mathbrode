@@ -206,7 +206,10 @@ router.get('/orders', async function(req, res, next){
   allOrders = await OrderModel.find(function(err, orders){
     console.log(orders)
   })
-  res.json({allOrders})
+  allPersoOrders = await PersoOrderModel.find(function(err, persoorders){
+    console.log(persoorders)
+  })
+  res.json({allOrders, allPersoOrders})
 })
 
 router.get('/order', async function(req, res, next){
@@ -231,21 +234,26 @@ router.post('/update-order', async function(req, res, next){
 })
 
 
-router.post('/create-perso-order', function(req, res, next){
+router.post('/create-perso-order', async function(req, res, next){
   console.log("Create perso order ===========>", req.body)
   var current_date = new Date
   Date.prototype.addDays = function(days) {
     this.setDate(this.getDate() + parseInt(days));
     return this;
 };
+
+thisuser = await UserModel.findOne({email: req.body.user})
+console.log(thisuser._id)
+
   newPersoOrder =  new PersoOrderModel({
-    user_id: req.body.user_id,
+    user_id: thisuser._id,
     total: req.body.total,
     date: current_date,
     shipping_date: current_date.addDays(4),
     in_person: req.body.in_person,
     photo: req.body.photo,
-    shipping_fee: req.body.shipping_fee
+    shipping_fee: req.body.shipping_fee,
+    description: req.body.description
   })
 
   newPersoOrder.save(function(error, order){
