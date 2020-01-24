@@ -212,6 +212,7 @@ router.get('/orders', async function(req, res, next){
   res.json({allOrders, allPersoOrders})
 })
 
+
 router.get('/order', async function(req, res, next){
   thisOrder = await OrderModel.findOne({_id: req.query.id})
   thisUser = await UserModel.findOne({_id: thisOrder.user_id})
@@ -221,13 +222,35 @@ router.get('/order', async function(req, res, next){
   res.json({thisOrder, thisUser, items})
 })
 
+router.get('/perso-order', async function(req, res, next){
+  console.log("===========================DANS LA ROUTE")
+  thisOrder = await PersoOrderModel.findOne({_id: req.query.id})
+    console.log("================> ITEMS", thisOrder)
+  thisUser = await UserModel.findOne({_id: thisOrder.user_id})
+  console.log("================> ITEMS", thisUser)
+  res.json({thisOrder, thisUser})
+})
+
+
 router.post('/update-order', async function(req, res, next){
   console.log("================>", req.body.order)
-  update = await OrderModel.updateOne(
+  update = await PersoOrderModel.updateOne(
     {_id: req.body.order},
     {sent: true}
     )
-  allOrders = await OrderModel.find(function(err, orders){
+  allOrders = await PersoOrderModel.find(function(err, orders){
+    console.log(orders)
+  })
+    res.json({allOrders})
+})
+
+router.post('/update-perso-order', async function(req, res, next){
+  console.log("================>", req.body.order)
+  update = await PersoOrderModel.updateOne(
+    {_id: req.body.order},
+    {sent: true}
+    )
+  allOrders = await PersoOrderModel.find(function(err, orders){
     console.log(orders)
   })
     res.json({allOrders})
@@ -249,6 +272,7 @@ console.log(thisuser._id)
     user_id: thisuser._id,
     total: req.body.total,
     date: current_date,
+    sent: false,
     shipping_date: current_date.addDays(4),
     in_person: req.body.in_person,
     photo: req.body.photo,
@@ -256,14 +280,21 @@ console.log(thisuser._id)
     description: req.body.description
   })
 
-  newPersoOrder.save(function(error, order){
+  orderSave = await newPersoOrder.save(function(error, order){
     if(error){
       console.log("ERREUR:", error);
     }else if (order){
       console.log("order SAVED IN DATABASE", order)
-      res.json({order})
+      
     }
   });
+  
+  allPersoOrders = await PersoOrderModel.find(function(err, orders){
+    console.log(orders)
+  })
+
+  res.json({allPersoOrders})
+  
 })
 
 module.exports = router;
