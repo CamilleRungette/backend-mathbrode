@@ -40,18 +40,8 @@ router.post('/sign-up', async function(req, res, next) {
     let isUserExists;
     if (user){
     isUserExists = false
-    
-        
-    res.json({user, isUserExists, userExists})
-  }else if (error){
-    isUserExists = true
-      console.log("USER NOR CREATED:", error)
-      res.json({error, isUserExists})
-    }
-  });
-}
-
-const sgMail = require("@sendgrid/mail");
+    console.log("USER CREATED", user)
+    const sgMail = require("@sendgrid/mail");
     sgMail.setApiKey(process.env.SECRET_SENGRID_KEY);
     const msg={
       to: req.body.email,
@@ -62,9 +52,21 @@ const sgMail = require("@sendgrid/mail");
       html:`<h2> Bonjour ${req.body.first_name} </h2> ! 
       Et bienvenue sur Mathbrode. Tu as désormais un compte chez nous. Viens vite nous rendre visite sur Mathbrode.com`,
     };
+    console.log("===================>",msg)
 
 sgMail.send(msg);
-console.log("===============================")
+console.log("SENT===============================")
+
+        
+    res.json({user, isUserExists, userExists})
+  }else if (error){
+    isUserExists = true
+      console.log("USER NOR CREATED:", error)
+      res.json({error, isUserExists})
+    }
+  });
+}
+
 })
 
 router.post('/sign-in', async function(req, res, next){
@@ -117,12 +119,30 @@ router.post('/create-message', async function (req, res, next){
   newMessage.save(function(error, message){
     if(message){
       console.log("MESSAGE SAVED", message)
+      const sgMail = require("@sendgrid/mail");
+          sgMail.setApiKey(process.env.SECRET_SENGRID_KEY);
+          const msg={
+            to: "c.rungette@gmail.com",
+            from:"no-reply@mathbrode.com",
+            subject: "Nouveau message",
+            text:`Bonjour Mathilde, 
+            Tu as reçu un nouveau message sur http://mathbrode.herokuapp.com/loginadmin`,
+            html:`<h2> Bonjour Mathilde</h2> ! 
+            Tu as reçu un nouveau message sur http://mathbrode.herokuapp.com/loginadmin`,
+          };
+          console.log("===================>",msg)
+      
+      sgMail.send(msg);
+      console.log("SENT===============================")
+      
+      
       res.json({result:true, newMessage})
     } else{
       console.log("MESSAGE NOT SAVED:", error)
       res.json({error})
     }req.body.email
   });
+
 
 })
 
