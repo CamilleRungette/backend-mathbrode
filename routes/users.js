@@ -31,6 +31,7 @@ router.post('/sign-up', async function(req, res, next) {
     address: "à renseigner",
     zip_code: "à renseigner",
     city: "à renseigner",
+    details:"à renseigner",
     token: uid2(32),
     salt: salt
   })
@@ -81,6 +82,23 @@ router.post('/sign-in', async function(req, res, next){
 
   res.json({isUserExists, userExists})
 })
+
+router.post('/update-info', async function(req, res, next){
+  console.log(req.body)
+  update = await UserModel.updateOne(
+    {_id: req.body.id},
+    {first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    email: req.body.email,
+    address: req.body.address,
+    zip_code: req.body.zipcode,
+    city: req.body.city,
+    details: req.body.details
+  })
+  thisUser = await UserModel.findOne({_id: req.body.id})
+  res.json({thisUser})
+})
+
 
 router.post('/create-message', async function (req, res, next){
   console.log("==================CREATE MESSAGE FUNCTION")
@@ -165,7 +183,7 @@ router.post('/order', function (req, res, next){
           Ta commande n° ${newOrder._id} a bien été passée pour un total de ${req.body.total}. La livraison sera prévue le ${dateFormat(newOrder.shipping_date)}. Tu peux retrouver toutes les infos de ta commande dans la partie "Mes commandes". 
           `,
         };
-    
+            
     sgMail.send(msg);
     
 
@@ -191,20 +209,5 @@ router.get('/myorders', async function(req, res, next){
   res.json({myOrders: orderList})
 })
 
-router.post('/update-info', async function(req, res, next){
-  console.log(req.body)
-  update = await UserModel.updateOne(
-    {_id: req.body.id},
-    {first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    email: req.body.email,
-    address: req.body.address,
-    zip_code: req.body.zipcode,
-    city: req.body.city,
-  })
-
-  thisUser = await UserModel.findOne({_id: req.body.id})
-  res.json({thisUser})
-})
 
 module.exports = router;
