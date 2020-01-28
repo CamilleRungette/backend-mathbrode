@@ -129,8 +129,8 @@ router.post('/create-message', async function (req, res, next){
             Tu as reçu un nouveau message sur http://mathbrode.herokuapp.com/loginadmin`,
             html:`<h2> Bonjour Mathilde !</h2>  
             Tu as reçu un nouveau message sur http://mathbrode.herokuapp.com/loginadmin : <br/>
-            De ${req.body.sender_name} (${req.body.sender_email}) : <br/>
-            ${req.body.content}`,
+            De ${message.sender_name} (${message.sender_email}) : <br/>
+            ${message.content}`,
           };
           console.log("===================>",msg)
       
