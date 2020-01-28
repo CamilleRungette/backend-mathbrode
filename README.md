@@ -1,1 +1,1 @@
-This is the back-end to the Mathbrode website --> https://github.com/CamilleRungette/Mathbrode
+This is the back-end to the [Mathbrode](https://github.com/CamilleRungette/Mathbrode) website.
