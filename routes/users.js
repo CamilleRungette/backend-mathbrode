@@ -127,8 +127,10 @@ router.post('/create-message', async function (req, res, next){
             subject: "Nouveau message",
             text:`Bonjour Mathilde, 
             Tu as reçu un nouveau message sur http://mathbrode.herokuapp.com/loginadmin`,
-            html:`<h2> Bonjour Mathilde</h2> ! 
-            Tu as reçu un nouveau message sur http://mathbrode.herokuapp.com/loginadmin`,
+            html:`<h2> Bonjour Mathilde !</h2>  
+            Tu as reçu un nouveau message sur http://mathbrode.herokuapp.com/loginadmin : <br/>
+            De ${req.body.sender_name} (${req.body.sender_email}) : <br/>
+            ${req.body.content}`,
           };
           console.log("===================>",msg)
       
