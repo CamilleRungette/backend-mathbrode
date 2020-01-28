@@ -50,7 +50,7 @@ router.post('/sign-up', async function(req, res, next) {
       text:`Bonjour ${req.body.first_name}, et bienvenue sur Mathbrode
       Tu as désormais un compte chez nous. Viens vite nous rendre visite sur Mathbrode.com`,
       html:`<h2> Bonjour ${req.body.first_name} </h2> ! 
-      Et bienvenue sur Mathbrode. Tu as désormais un compte chez nous. Viens vite nous rendre visite sur Mathbrode.com`,
+      Et bienvenue sur Mathbrode. Tu as désormais un compte chez nous. N'oublie pas de compléter ton adresse avant de passer commande. Viens vite nous rendre visite sur Mathbrode.com`,
     };
     console.log("===================>",msg)
 
@@ -124,13 +124,15 @@ router.post('/create-message', async function (req, res, next){
           const msg={
             to: "c.rungette@gmail.com",
             from:"no-reply@mathbrode.com",
-            subject: "Nouveau message",
-            text:`Bonjour Mathilde, 
-            Tu as reçu un nouveau message sur http://mathbrode.herokuapp.com/loginadmin`,
+            subject: "Nouveau message sur Mathbrode",
+            text:`Bonjour Mathilde !  
+            Tu as reçu un nouveau message sur Mathbrode :
+            De ${req.body.sender_name} (${req.body.sender_email}) : <br/>
+            ${req.body.content}`,
             html:`<h2> Bonjour Mathilde !</h2>  
-            Tu as reçu un nouveau message sur http://mathbrode.herokuapp.com/loginadmin : <br/>
-            De ${message.sender_name} (${message.sender_email}) : <br/>
-            ${message.content}`,
+            <h3>Tu as reçu un nouveau message sur <a href="http://mathbrode.herokuapp.com/loginadmin"> Mathbrode </a> : <br/>
+            De ${req.body.sender_name} (${req.body.sender_email}) : <br/>
+            ${req.body.content} </h3>`,
           };
           console.log("===================>",msg)
       
