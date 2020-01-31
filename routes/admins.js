@@ -257,11 +257,6 @@ router.post('/update-perso-order', async function(req, res, next){
 
 router.post('/create-perso-order', async function(req, res, next){
   console.log("Create perso order ===========>", req.body)
-  var current_date = new Date
-  Date.prototype.addDays = function(days) {
-    this.setDate(this.getDate() + parseInt(days));
-    return this;
-};
 
 thisuser = await UserModel.findOne({email: req.body.user})
 console.log(thisuser._id)
@@ -271,11 +266,12 @@ console.log(thisuser._id)
     total: req.body.total,
     date: current_date,
     sent: false,
-    shipping_date: current_date.addDays(4),
+    shipping_date: " ",
     in_person: req.body.in_person,
     photo: req.body.photo,
     shipping_fee: req.body.shipping_fee,
-    description: req.body.description
+    description: req.body.description,
+    paid: false,
   })
 
   orderSave = await newPersoOrder.save(function(error, order){

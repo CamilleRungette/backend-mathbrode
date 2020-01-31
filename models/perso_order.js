@@ -10,6 +10,7 @@ let persoOrderSchema = mongoose.Schema({
     photo: String,
     shipping_fee: Number,
     description: String,
+    paid: Boolean,
 });
 
 const OrderModel = mongoose.model("perso_orders", persoOrderSchema);

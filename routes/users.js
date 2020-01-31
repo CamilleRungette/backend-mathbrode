@@ -5,6 +5,7 @@ UserModel = require('../models/user');
 MessageModel = require('../models/message');
 OrderModel = require('../models/order');
 ItemOrderModel = require('../models/item_order');
+PersoOrderModel = require('../models/perso_order');
 var uid2 = require("uid2"); 
 var SHA256 = require("crypto-js/sha256"); 
 var encBase64 = require("crypto-js/enc-base64"); 
@@ -220,17 +221,36 @@ router.post('/order', function (req, res, next){
 
 })
 
+router.post('/perso-order', async function(req, res, next){
+  var current_date = new Date
+  Date.prototype.addDays = function(days) {
+    this.setDate(this.getDate() + parseInt(days));
+    return this;
+};
+
+  update = await PersoOrderModel.updateOne(
+    {_id: req.body.order},
+    {paid: true,
+    shipping_date: current_date.addDays(10)})
+   
+    res.json({update})
+})
+
 router.get('/myorders', async function(req, res, next){
   myOrders = await OrderModel.find({user_id: req.query.id })
-  
+  myPersoOrders = await PersoOrderModel.find({user_id: req.query.id})
+  console.log(myPersoOrders)
+
   var orderList = [];
+  var persoOrderList= [];
   for(let i = 0; i < myOrders.length; i++){ 
     let copyOrder ={_id: myOrders[i]._id, total: myOrders[i].total, date :myOrders[i].date};
     copyOrder.items = await ItemOrderModel.find({order_id: myOrders[i]._id});
     orderList.push(copyOrder);
   }
-  console.log(orderList);
-  res.json({myOrders: orderList})
+
+  console.log("=============>", persoOrderList);
+  res.json({myOrders: orderList, myPersoOrders})
 })
 
 
