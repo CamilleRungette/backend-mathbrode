@@ -211,8 +211,7 @@ router.get('/orders', async function(req, res, next){
   })
   res.json({allOrders, allPersoOrders})
 })
-
-
+ 
 router.get('/order', async function(req, res, next){
   thisOrder = await OrderModel.findOne({_id: req.query.id})
   thisUser = await UserModel.findOne({_id: thisOrder.user_id})
@@ -222,6 +221,19 @@ router.get('/order', async function(req, res, next){
   res.json({thisOrder, thisUser, items})
 })
 
+router.post('/update-order', async function(req, res, next){
+  console.log("================>", req.body.order)
+  update = await OrderModel.updateOne(
+    {_id: req.body.order},
+    {sent: true}
+    )
+  allOrders = await OrderModel.find(function(err, orders){
+    console.log(orders)
+  })
+  console.log(allOrders)
+    res.json({allOrders})
+})
+
 router.get('/perso-order', async function(req, res, next){
   console.log("===========================DANS LA ROUTE")
   thisOrder = await PersoOrderModel.findOne({_id: req.query.id})
@@ -229,19 +241,6 @@ router.get('/perso-order', async function(req, res, next){
   thisUser = await UserModel.findOne({_id: thisOrder.user_id})
   console.log("================> ITEMS", thisUser)
   res.json({thisOrder, thisUser})
-})
-
-
-router.post('/update-order', async function(req, res, next){
-  console.log("================>", req.body.order)
-  update = await PersoOrderModel.updateOne(
-    {_id: req.body.order},
-    {sent: true}
-    )
-  allOrders = await PersoOrderModel.find(function(err, orders){
-    console.log(orders)
-  })
-    res.json({allOrders})
 })
 
 router.post('/update-perso-order', async function(req, res, next){
@@ -255,7 +254,6 @@ router.post('/update-perso-order', async function(req, res, next){
   })
     res.json({allOrders})
 })
-
 
 router.post('/create-perso-order', async function(req, res, next){
   console.log("Create perso order ===========>", req.body)
