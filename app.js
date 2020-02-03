@@ -15,6 +15,10 @@ app.use(cors())
 app.use(fileUpload());
 app.use(require("body-parser").text());
 
+app.get("/*", function (req, res) {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+})
+
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
@@ -49,9 +53,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.get("/*", function (req, res) {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-})
+
 
 
 module.exports = app;
