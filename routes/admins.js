@@ -189,7 +189,7 @@ router.post('/create-workshop', function(req, res, next){
       desc: req.body.desc,
       price: req.body.price,
       duration: req.body.duration,
-      photo: "https://res.cloudinary.com/dduugb9jy/image/upload/v1576163613/camille/diizhinpqeiouhwenbdj.jpg"
+      photo: req.body.photo
     });
 
     newWorkshop.save(function(error, workshop){
