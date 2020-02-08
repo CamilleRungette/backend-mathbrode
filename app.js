@@ -11,9 +11,7 @@ var fileUpload = require('express-fileupload');
 
 var app = express();
 var cors = require('cors')
-app.get("/*", function (req, res) {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-})
+
 app.use(cors())
 app.use(fileUpload());
 app.use(require("body-parser").text());
