@@ -14,8 +14,8 @@ PersoOrderModel = require('../models/perso_order')
 router.post('/create-admin', function (req, res, next){
     newAdmin = AdminModel({
         name: "Mathilde",
-        email: "blabla@gmail.com",
-        password: "broderie"
+        email: req.body.email,
+        password: req.body.password
     })
 
     newAdmin.save(function(error, admin){
