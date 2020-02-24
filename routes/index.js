@@ -52,6 +52,8 @@ router.get('/workshops', async function(req, res, next){
 
 router.post("/charge", async (req, res) => {
   console.log("coucou $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+  console.log("=====", req.body);
+  
   try {
     let {status} = await stripe.charges.create({
       amount: 2000,
