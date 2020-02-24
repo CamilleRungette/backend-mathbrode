@@ -1,10 +1,10 @@
+require('dotenv/config')
 var express = require('express');
 var router = express.Router();
 EventModel = require('../models/event')
 ItemsModel = require('../models/item')
 WorkshopModel = require ('../models/workshops')
-const stripe = require("stripe")("sk_test_U4Zt16oIOE1MZHl9cC8L7kjE00XOGTYa7j");
-
+const stripe = require("stripe")(process.env.SECRET_STRIPE_KEY);
 
 
 
@@ -51,7 +51,7 @@ router.get('/workshops', async function(req, res, next){
 })
 
 router.post("/charge", async (req, res) => {
-  console.log("coucou")
+  console.log("coucou $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
   try {
     let {status} = await stripe.charges.create({
       amount: 2000,
