@@ -169,8 +169,6 @@ router.post('/read-message', async function (req, res, next){
 
 router.post('/delete-message', async function(req, res, next){
     console.log("in the delete message method")
-  message = await MessageModel.findOne({_id: req.body.message_id})
-    console.log(message)
   MessageModel.deleteOne(
     {_id: req.body.message_id},
     function(error) {
@@ -290,5 +288,42 @@ console.log(thisuser._id)
   res.json({allPersoOrders})
   
 })
+
+router.get('/classesevents', async function(req, res, next){
+  allClasses = await WorkshopModel.find(function(error, orders){
+    console.log(orders);
+    
+  })
+  allEvents = await EventModel.find(function(error, events){
+    console.log(events);  
+  })
+
+  res.json({allClasses, allEvents})
+})
+
+router.post('/delete-event', async function (req, res){
+  console.log(req.body);
+  del = await EventModel.deleteOne({_id: req.body.id}, function(error) {
+    console.log(error);   
+  });
+
+  allEvents = await EventModel.find(function(error, events){
+    console.log(events)
+  })
+  res.json({allEvents})
+})
+
+router.post('/delete-class', async function (req, res){
+  console.log(req.body);
+  del = await WorkshopModel.deleteOne({_id: req.body.id}, function(error) {
+    console.log(error);   
+  });
+
+  allClasses = await WorkshopModel.find(function(error, classes){
+    console.log(classes)
+  })
+  res.json({allClasses})
+})
+
 
 module.exports = router;
