@@ -4,7 +4,7 @@ var router = express.Router();
 EventModel = require('../models/event')
 ItemsModel = require('../models/item')
 WorkshopModel = require ('../models/workshops')
-const stripe = require("stripe")(process.env.SECRET_STRIPE_KEY);
+const stripe = require("stripe")("sk_test_U4Zt16oIOE1MZHl9cC8L7kjE00XOGTYa7j");
 
 
 
