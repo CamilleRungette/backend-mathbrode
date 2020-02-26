@@ -292,7 +292,6 @@ console.log(thisuser._id)
 router.get('/classesevents', async function(req, res, next){
   allClasses = await WorkshopModel.find(function(error, orders){
     console.log(orders);
-    
   })
   allEvents = await EventModel.find(function(error, events){
     console.log(events);  
@@ -325,5 +324,35 @@ router.post('/delete-class', async function (req, res){
   res.json({allClasses})
 })
 
+router.get('/update-service', async function(req, res){
+  if (req.query.eventid !== ""){
+    thisEvent = await EventModel.findOne({_id : req.query.eventid});
+    console.log(thisEvent);
+    res.json({thisEvent})
+  } else if (req.query.classid !== ""){
+    thisClass = await WorkshopModel.findOne({_id: req.query.classid});
+    console.log(thisClass);
+    res.json({thisClass}) 
+  }  
+})
+
+router.post('/update-event', async function(req, res){
+  console.log(req.body);
+  update = await EventModel.updateOne(
+    {_id: req.body.id},
+    {address: req.body.address,
+    date: req.body.date,
+    ending_time: req.body.ending_time,
+    link: req.body.link,
+    name: req.body.name,
+    starting_time: req.body.starting_time
+    })
+
+    allEvents = await EventModel.find(function(error, events){
+      console.log("==========================", events);
+    })
+
+    res.json({allEvents})
+})
 
 module.exports = router;
