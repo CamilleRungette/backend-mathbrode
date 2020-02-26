@@ -355,4 +355,22 @@ router.post('/update-event', async function(req, res){
     res.json({allEvents})
 })
 
+router.post('/update-workshop', async function(req,res){
+  console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", req.body);
+  console.log("$$$$$$$$$$$$$$$$$$$$$$$$$");
+  
+  update = await WorkshopModel.updateOne(
+    {_id: req.body.id},
+    {desc: req.body.desc,
+    duration: req.body.duration,
+    price: req.body.price,
+    title: req.body.title,
+    })
+
+  allWorkshops = await WorkshopModel.find(function(error, classes){
+    console.log(classes);
+  })
+  res.json({allWorkshops})  
+})
+
 module.exports = router;
