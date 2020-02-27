@@ -14,11 +14,22 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/events', async function(req, res, next){
-  allEvents = await EventModel.find(function(err, events){
-    console.log(events)
-  })
+  allEvents = []
+  allPastEvents = []
+  currentDate = new Date
+  Events = await EventModel.find(function(err, events){
+    console.log("OK")
+  })  
 
-  res.json({result: true, allEvents})
+  for (let i=0; i< Events.length; i++){
+    if (Events[i].date >= new Date){
+      allEvents.push(Events[i])
+    } else if (Events[i].date < currentDate){
+      allPastEvents.push(Events[i])
+    }
+  }
+
+  res.json({result: true, allEvents, allPastEvents})
 })
 
 router.get('/items', async function(req, res, next){
