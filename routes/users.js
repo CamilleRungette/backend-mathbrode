@@ -34,7 +34,8 @@ router.post('/sign-up', async function(req, res, next) {
     city: "à renseigner",
     details:"à renseigner",
     token: uid2(32),
-    salt: salt
+    salt: salt,
+    photo: ""
   })
 
   newUser.save(function(error, user){
@@ -251,6 +252,16 @@ router.get('/myorders', async function(req, res, next){
 
   console.log("=============>", persoOrderList);
   res.json({myOrders: orderList, myPersoOrders})
+})
+
+router.post('/update-photo', async function(req,res){
+  console.log(req.body);
+  update = await UserModel.updateOne(
+      {_id: req.body.id},
+      {photo: req.body.photo}
+    )
+  let photo = req.body.photo
+  res.json({photo})
 })
 
 

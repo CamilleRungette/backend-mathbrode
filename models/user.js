@@ -11,6 +11,7 @@ var userSchema = mongoose.Schema({
     city: String,
     token: String,
     salt: String,
+    photo: String,
 })
 
 const UserModel = mongoose.model('users', userSchema);
