@@ -125,6 +125,8 @@ router.post('/create-event', function(req, res, next){
     newEvent = new EventModel({
       name: req.body.name,
       address: req.body.address,
+      zip_code: req.body.zip_code,
+      city: req.body.city,
       date: req.body.date,
       photo: req.body.photo,
       starting_time: req.body.starting_time,
